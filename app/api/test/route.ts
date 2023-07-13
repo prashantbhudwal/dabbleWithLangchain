@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
+import { LLMChain } from "langchain/chains";
 
 const talkToOpenAI = async function () {
   const model = new OpenAI({
@@ -30,7 +31,29 @@ const usingATemplate = async function () {
   return model.call(finalPrompt);
 };
 
+const creatingAChain = async function () {
+  const templateBase = "What do you hate about {subject}?";
+
+  const prompt = new PromptTemplate({
+    template: templateBase,
+    inputVariables: ["subject"],
+  });
+
+  const model = new OpenAI({
+    temperature: 0.7,
+  });
+
+  const chain = new LLMChain({
+    llm: model,
+    prompt: prompt,
+  });
+
+  return chain.call({
+    subject: "Chemistry",
+  });
+};
+
 export async function GET() {
-  const res = await usingATemplate();
+  const res = await creatingAChain();
   return NextResponse.json(res);
 }
