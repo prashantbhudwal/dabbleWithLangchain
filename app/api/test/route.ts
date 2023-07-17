@@ -1,9 +1,9 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { splitPDF } from "../lib/textSplitters";
+import { splitIntoTokens } from "../lib/textSplitters";
 
 export async function GET() {
-  const res = await splitPDF();
+  const res = await splitIntoTokens();
   return NextResponse.json(res);
 }

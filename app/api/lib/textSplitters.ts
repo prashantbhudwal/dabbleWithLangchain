@@ -1,6 +1,8 @@
 import {
   RecursiveCharacterTextSplitter,
   CharacterTextSplitter,
+  TokenTextSplitter,
+  MarkdownTextSplitter,
 } from "langchain/text_splitter";
 
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
@@ -45,3 +47,21 @@ export async function splitPDF() {
   console.log(pdf.length);
   return splitPages.length;
 }
+
+export async function splitIntoTokens() {
+  const text =
+    "This is a sample of a philosophical text that I have written. DOODlyou think it works.";
+
+  const tokenSplitter = new TokenTextSplitter({
+    chunkSize: 1,
+    chunkOverlap: 0,
+    encodingName: "gpt2",
+  });
+
+  const tokenSplit = await tokenSplitter.splitText(text);
+
+  console.log(tokenSplit);
+  return tokenSplit;
+}
+
+
