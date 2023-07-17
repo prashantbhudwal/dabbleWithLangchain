@@ -16,7 +16,3 @@ export async function pdfLoader() {
   console.log(metaData);
   return metaData;
 }
-
-export async function documentLoader() {
-
-}
