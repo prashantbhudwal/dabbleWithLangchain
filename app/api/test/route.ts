@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { LLMChain } from "langchain/chains";
-
+import { documentLoader } from "../lib/documentLoaders";
+export const dynamic = "force-dynamic";
 const talkToOpenAI = async function () {
   const model = new OpenAI({
     temperature: 2,
@@ -54,6 +55,6 @@ const creatingAChain = async function () {
 };
 
 export async function GET() {
-  const res = await creatingAChain();
+  const res = await documentLoader();
   return NextResponse.json(res);
 }
