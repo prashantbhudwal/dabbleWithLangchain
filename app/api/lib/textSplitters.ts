@@ -64,4 +64,44 @@ export async function splitIntoTokens() {
   return tokenSplit;
 }
 
+export async function splitMarkdown() {
+  const text = `
+# Large Language Models (LLMs)
 
+Large Language Models (LLMs) are state-of-the-art models in natural language processing (NLP). They are designed to understand and generate human-like text.
+
+## Key Features
+
+### Language Understanding
+
+LLMs possess advanced language understanding capabilities. They can comprehend the meaning and context of natural language text.
+
+### Text Generation
+
+LLMs excel at generating coherent and contextually relevant text. They can produce human-like responses based on given input.
+
+### Language Translation
+
+LLMs are proficient in language translation tasks. They can convert text from one language to another accurately.
+
+**Example Code:**
+
+\`\`\`javascript
+const llm = new LargeLanguageModel();
+const inputText = "Some input text";
+const generatedText = llm.generateText(inputText);
+console.log(generatedText);
+\`\`\`
+
+To learn more about LLMs, check out the [LLM Handbook](https://example.com/llm-handbook).
+`;
+
+  const markdownSplitter = new MarkdownTextSplitter({
+    chunkSize: 10,
+    chunkOverlap: 5,
+  });
+
+  const markdownSplit = await markdownSplitter.splitText(text);
+  console.log(markdownSplit);
+  return markdownSplit;
+}
