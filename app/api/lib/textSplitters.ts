@@ -28,7 +28,6 @@ export async function splitter() {
   console.log(characterSplit);
   return "test";
 }
-
 export async function splitPDF() {
   const filePath = "./public/schools.pdf";
   const fileContent = fs.readFileSync(filePath);
@@ -47,7 +46,6 @@ export async function splitPDF() {
   console.log(pdf.length);
   return splitPages.length;
 }
-
 export async function splitIntoTokens() {
   const text =
     "This is a sample of a philosophical text that I have written. DOODlyou think it works.";
@@ -63,7 +61,6 @@ export async function splitIntoTokens() {
   console.log(tokenSplit);
   return tokenSplit;
 }
-
 export async function splitMarkdown() {
   const text = `
 # Large Language Models (LLMs)
