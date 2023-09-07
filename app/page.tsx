@@ -1,8 +1,11 @@
 "use client";
 import { useChat } from "ai/react";
+const endpoint = "/api/chat-langchain";
 
 export default function Home() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, handleInputChange, handleSubmit } = useChat({
+    api: endpoint,
+  });
 
   return (
     <div className="mx-auto w-full max-w-md py-24 flex flex-col stretch">
