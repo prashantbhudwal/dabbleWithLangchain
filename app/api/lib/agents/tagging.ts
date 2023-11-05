@@ -2,6 +2,7 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { ChatPromptTemplate } from "langchain/prompts";
+import { JsonOutputFunctionsParser } from "langchain/output_parsers";
 const MODEL_NAME = "gpt-4";
 
 const extractionFunctionJsonSchema = zodToJsonSchema(
@@ -15,7 +16,7 @@ const extractionFunctionJsonSchema = zodToJsonSchema(
   })
 );
 
-export async function extractSentiment() {
+export async function tagSentiment() {
   console.log(extractionFunctionJsonSchema);
 
   const taggingFunction = {
@@ -54,6 +55,16 @@ export async function extractSentiment() {
   const result2 = await taggingChain.invoke({
     input: "Menu eh product bahut changa lagda hai!",
   });
+
   console.log("⚫️", result2);
+
+  const jsonParser = new JsonOutputFunctionsParser();
+  const taggingChainWithParser = taggingChain.pipe(jsonParser);
+  const result3 = await taggingChainWithParser.invoke({
+    input: "Mala ye product khup aavadla!",
+  });
+
+  console.log("🔴", result3);
+
   return { result, result2 };
 }

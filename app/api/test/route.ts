@@ -7,9 +7,9 @@ import { pdfLoader } from "../lib/documentLoaders";
 import { Test } from "../lib/vectordb";
 import { chain1 } from "../lib/chains";
 import run from "../lib/templates";
-import { extractSentiment } from "../lib/agents/tagging";
+import { tagSentiment } from "../lib/agents/tagging";
 
 export async function GET() {
-  const res = await extractSentiment();
+  const res = await tagSentiment();
   return NextResponse.json("Hello World!");
 }
