@@ -2,7 +2,10 @@ import { ChatOpenAI } from "langchain/chat_models/openai";
 import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import { ChatPromptTemplate } from "langchain/prompts";
-import { JsonOutputFunctionsParser } from "langchain/output_parsers";
+import {
+  JsonOutputFunctionsParser,
+  JsonKeyOutputFunctionsParser,
+} from "langchain/output_parsers";
 
 const SAMPLE_TEXT =
   "Amid the tapestry of urban life, where the hum of the digital age is ever-present, there lies a quaint abode where the fusion of classic and contemporary is palpably felt. Here dwells an individual, a maven in the esoteric art of algorithms and code, who has tethered his fortunes to the dynamic realms of Silicon Valley's technological crusade. Known in professional circles by the moniker ‘Smith’, his digital signature traverses the cyber corridors in the form of an electronic alias, serving as a beacon for vocational dialogues. His abode, a fusion of red bricks and modern trimmings, stands proudly in the embrace of a city that pulses with innovation, its location a well-kept whisper among the streets named for sylvan trees. Within the confines of this metropolitan burrow, ‘Smith’ contemplates the binary complexities of his vocation, his contributions to the tech leviathan Quantum Solutions, a testament to his unspoken role in the grand tapestry of the Information Age.";
@@ -51,7 +54,7 @@ export async function extractInformation() {
   });
 
   const systemTemplate =
-    "Extract the personal information from the text. The information might be hidden in the obscure text. Also the names might not be mentioned explicitly by their formal names.";
+    "Extract the personal information from the text. The information might be hidden in the obscure text. Also the names might not be mentioned explicitly by their formal names. If you don't find any information, don't return anything, don't guess.";
   const humanTemplate = "{input}";
 
   const prompt = ChatPromptTemplate.fromMessages([
@@ -68,5 +71,17 @@ export async function extractInformation() {
     input: SAMPLE_TEXT_2,
   });
 
-  console.log(result);
+  const jsonKeyParser = new JsonKeyOutputFunctionsParser({
+    attrName: "name",
+  });
+
+  const extractionChainWithJsonKeyParser = prompt
+    .pipe(functionBoundModel)
+    .pipe(jsonKeyParser);
+
+  const result_keyOnly = await extractionChainWithJsonKeyParser.invoke({
+    input: SAMPLE_TEXT_2,
+  });
+
+  console.log(result_keyOnly);
 }
